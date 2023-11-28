@@ -7,11 +7,11 @@ resources:
 - ../base
 
 images:
-- name: quay.io/confidential-containers/reqs-payload
-  newTag: e92cb67ea8956128a31950a0c3fa79a086dbaf1a
-- name: quay.io/confidential-containers/runtime-payload
-  newName: quay.io/confidential-containers/runtime-payload-ci
-  newTag: kata-containers-8de1f8e19f858134ba455a7c04edcb21d8bcf6b1
+- name: docker.io/zhlhahaha/reqs-payload
+  newTag: aarch64-aa0ff73cbf4b218b83e85e4f80eab7591e9dc79c
+- name: docker.io/zhlhahaha/runtime-payload
+  newName: docker.io/zhlhahaha/runtime-payload
+  newTag: kata-containers-b42968014fc99eee53c3070dd1ad6d03ac1f0624-aarch64
 
 patches:
 - patch: |-
@@ -19,30 +19,22 @@ patches:
       path: /spec/config/runtimeClasses
       value:
       - name: "kata-clh"
-        snapshotter: "nydus"
+        snapshotter: "overlayfs"
       - name: "kata-clh-tdx"
-        snapshotter: "nydus"
+        snapshotter: "overlayfs"
       - name: "kata-qemu"
-        snapshotter: "nydus"
+        snapshotter: "overlayfs"
       - name: "kata-qemu-tdx"
-        snapshotter: "nydus"
+        snapshotter: "overlayfs"
       - name: "kata-qemu-sev"
-        snapshotter: "nydus"
+        snapshotter: "overlayfs"
       - name: "kata-qemu-snp"
-        snapshotter: "nydus"
+        snapshotter: "overlayfs"
     - op: add
       path: /spec/config/defaultRuntimeClassName
       value: "kata-qemu"
     - op: add
       path: /spec/config/debug
       value: false
-    - op: add
-      path: /spec/config/environmentVariables
-      value:
-        # It means that we're relying on the cluster to already have
-        # containerd v1.7+ running.  If you know for sure that's not
-        # the case, please, set this variable to `true`
-        - name: "INSTALL_OFFICIAL_CONTAINERD"
-          value: "false"
   target:
     kind: CcRuntime
